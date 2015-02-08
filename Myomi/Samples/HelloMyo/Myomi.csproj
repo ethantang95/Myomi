@@ -78,6 +78,7 @@
     <Compile Include="Analyzer\GestureAnalyzer.cs" />
     <Compile Include="Analyzer\GyroscopeAnalyzer.cs" />
     <Compile Include="Analyzer\OrientationAnalyzer.cs" />
+    <Compile Include="CommonOperations.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Data\MyoData.cs" />
     <Compile Include="Analyzer\MyoDataAnalyzer.cs" />

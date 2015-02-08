@@ -3,58 +3,90 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MyoNet.Myo;
+using Myomi.Data;
 
 namespace Myomi.Instances
 {
     class MyomiMyo
     {
 
-        IMyo myo;
+        IMyo _myo;
+        MyoState _myoState;
+        //not sure if this is dangerous or not... we do not know the beahviour of recog/lostArm events
+        //it might put the program in an infinite stuck loop if the behaviour is not what is assumed
+        bool _isOnArm;
 
         public void Initialize()
         {
-            while (myo == null)
+            _myoState = new MyoState();
+            while (_myo == null)
             {
-                myo = Context.ProgramContext.Hub.GetMyo();
+                _myo = Context.ProgramContext.Hub.GetMyo();
             }
+            _isOnArm = true;
 
-            myo.AccelerometerDataAcquired += OnAccelerometerData;
-            myo.GyroscopeDataAquired += OnGyroscopeData;
-            myo.OrientationDataAcquired += OnOrientationData;
-            myo.PoseChanged += OnPoseChanged;
-            myo.RecognizedArm += OnRecognizedArm;
-            myo.LostArm += OnLostArm;
+            _myo.AccelerometerDataAcquired += OnAccelerometerData;
+            _myo.GyroscopeDataAquired += OnGyroscopeData;
+            _myo.OrientationDataAcquired += OnOrientationData;
+            _myo.PoseChanged += OnPoseChanged;
+            _myo.RecognizedArm += OnRecognizedArm;
+            _myo.LostArm += OnLostArm;
         }
 
-        static void OnAccelerometerData(object sender, AccelerometerDataEventArgs e) 
+        public MyoRawData GetCurrentData() 
         {
-        
+            MyoRawData data = new MyoRawData(_myoState);
+            return data;
         }
 
-        static void OnGyroscopeData(object sender, GyroscopeDataEventArgs e)
+        #region EventDeclaration
+        void OnAccelerometerData(object sender, AccelerometerDataEventArgs e) 
+        {
+            _myoState.Accel = e.Accelerometer;
+        }
+
+        void OnGyroscopeData(object sender, GyroscopeDataEventArgs e)
+        {
+            _myoState.Gyro = e.Gyroscope;
+        }
+
+        void OnOrientationData(object sender, OrientationDataEventArgs e)
+        {
+            _myoState.Orien = e.Orientation;
+        }
+
+        void OnPoseChanged(object sender, PoseChangedEventArgs e)
+        {
+            _myoState.Pose = e.Pose;
+        }
+
+        void OnRecognizedArm(object sender, RecognizedArmEventArgs e)
+        {
+            _myoState.Arm = e.Arm;
+        }
+
+        void OnLostArm(object sender, MyoEventArgs e)
         {
 
         }
+        #endregion
+    }
 
-        static void OnOrientationData(object sender, OrientationDataEventArgs e)
+    internal class MyoState 
+    {
+        public Pose Pose { get; set; }
+        public Vector3 Accel { get; set; }
+        public Vector3 Gyro { get; set; }
+        public Quaternion Orien { get; set; }
+        public Arm Arm { get; set; }
+
+        public MyoState()
         {
-
+            this.Pose = MyoNet.Myo.Pose.Rest;
+            this.Accel = new Vector3(0, 0, 0);
+            this.Gyro = new Vector3(0, 0, 0);
+            this.Orien = new Quaternion(0, 0, 0, 0);
+            this.Arm = MyoNet.Myo.Arm.Unknown;
         }
-
-        static void OnPoseChanged(object sender, PoseChangedEventArgs e)
-        {
-
-        }
-
-        static void OnRecognizedArm(object sender, RecognizedArmEventArgs e)
-        {
-
-        }
-
-        static void OnLostArm(object sender, MyoEventArgs e)
-        {
-
-        }
-
     }
 }
