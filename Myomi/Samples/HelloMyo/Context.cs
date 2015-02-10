@@ -15,7 +15,8 @@ namespace Myomi
         public PointsConfig Points { get; set; }
         public MyomiHub Hub { get; set; }
         public MyomiMyo Myo { get; set; }
-        public static Context ProgramContext
+
+        public static Context Instance
         {
             get
             {
@@ -26,7 +27,6 @@ namespace Myomi
                     _context = new Context();
                 }
                 return _context;
-
             }
         }
                 
@@ -38,7 +38,6 @@ namespace Myomi
             //should be run on a separate thread since getting the myo to set up is a whole different task
             //but disables the user from continuing
             Myo.Initialize();
-
         }
 
         public static void Initialize()
