@@ -73,9 +73,7 @@ namespace Myomi
 
 			if (onArm)
 			{
-				Console.Write("[{0}][{1}]", 
-					whichArm.ToString()[0], 
-					currentPose.ToString().PadRight(13));
+				Console.Write("[{0}][{1}]", whichArm.ToString()[0], currentPose.ToString().PadRight(13));
 			}
 			else
 			{
