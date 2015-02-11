@@ -8,6 +8,7 @@ namespace Myomi.FromFiles
 {
     public class PointsConfig
     {
+        static string _fileName = "Points.config";
         public int Match { get; private set; }
         public int SlightMatch { get; private set; }
         public int NoMatch { get; private set; }
@@ -26,11 +27,11 @@ namespace Myomi.FromFiles
         public void Initialize() 
         { 
             //initalizes the values of such by reading the config file
-            var pointsConfigRead = FileManager.GetValueFromFile("Points.config");
-            setValue(pointsConfigRead);
+            var pointsConfigRead = FileManager.GetValueFromFile(_fileName);
+            SetValue(pointsConfigRead);
         }
 
-        private void setValue(Dictionary<string, string> pointsConfigRead)
+        private void SetValue(Dictionary<string, string> pointsConfigRead)
         {
             try
             {
@@ -54,6 +55,33 @@ namespace Myomi.FromFiles
                 Console.WriteLine("Something went horribly wrong... how?");
                 Console.WriteLine(e.StackTrace);
             }
+        }
+
+        private void RecoverFile() 
+        {
+            var pointsConfig = new Dictionary<string, string>();
+            pointsConfig.Add("Match", "0");
+            pointsConfig.Add("SlightMatch", "6");
+            pointsConfig.Add("NoMatch", "21");
+            pointsConfig.Add("NotRest", "12");
+            pointsConfig.Add("NotAnalyzed", "0");
+            pointsConfig.Add("NoMatchPose", "50");
+            pointsConfig.Add("NotAnalyzedPose", "0");
+            pointsConfig.Add("NoMatchOrientation", "6");
+            pointsConfig.Add("NotAnalyzedOrientation", "0");
+
+            if (!FileManager.WriteToFile(pointsConfig, _fileName)) 
+            {
+                Console.WriteLine("Failure to recover {0}, now exiting program", _fileName);
+                System.Environment.Exit(-1);
+            }
+            else
+            {
+                //here, we have a recover success
+                Console.WriteLine("Successful recovery of {0}, reinitalizing", _fileName);
+                this.Initialize();
+            }
+
         }
     }
 }

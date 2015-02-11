@@ -40,7 +40,7 @@ namespace Myomi.FromFiles
             {
                 using (var writer = new StreamWriter(fileName)) 
                 {
-                    foreach (KeyValuePair<string, string> entry in toWrite) 
+                    foreach (var entry in toWrite) 
                     {
                         writer.WriteLine("{0}:{1}", entry.Key, entry.Value);
                     }
