@@ -26,35 +26,23 @@ namespace Myomi.FromFiles
         public void Initialize() 
         { 
             //initalizes the values of such by reading the config file
-            var pointsConfigRead = new Dictionary<string, int>();
-            try
-            {
-                using (var sr = new StreamReader("Points.config"))
-                {
-                    string line = sr.ReadLine();
-                    var configLine = line.Split(':');
-                    pointsConfigRead.Add(configLine[0], Int32.Parse(configLine[1]));
-                }
-            }
-            catch
-            {
-                Console.WriteLine("The Points.config file is corrupt, attempting to reset the file.");
-            }
+            var pointsConfigRead = FileManager.GetValueFromFile("Points.config");
+            setValue(pointsConfigRead);
         }
 
-        private void setValue(Dictionary<string, int> pointsConfigRead)
+        private void setValue(Dictionary<string, string> pointsConfigRead)
         {
             try
             {
-                Match = pointsConfigRead["Match"];
-                SlightMatch = pointsConfigRead["SlightMatch"];
-                NoMatch = pointsConfigRead["NoMatch"];
-                NotRest = pointsConfigRead["NotRest"];
-                NotAnalyzed = pointsConfigRead["NotAnalyzed"];
-                NoMatchPose = pointsConfigRead["NoMatchPose"];
-                NotAnalyzedPose = pointsConfigRead["NotAnalyzedPose"];
-                NoMatchOrientation = pointsConfigRead["NoMatchOrientation"];
-                NotAnalyzedOrientation = pointsConfigRead["NotAnalyzedOrientation"];
+                Match = Int32.Parse(pointsConfigRead["Match"]);
+                SlightMatch = Int32.Parse(pointsConfigRead["SlightMatch"]);
+                NoMatch = Int32.Parse(pointsConfigRead["NoMatch"]);
+                NotRest = Int32.Parse(pointsConfigRead["NotRest"]);
+                NotAnalyzed = Int32.Parse(pointsConfigRead["NotAnalyzed"]);
+                NoMatchPose = Int32.Parse(pointsConfigRead["NoMatchPose"]);
+                NotAnalyzedPose = Int32.Parse(pointsConfigRead["NotAnalyzedPose"]);
+                NoMatchOrientation = Int32.Parse(pointsConfigRead["NoMatchOrientation"]);
+                NotAnalyzedOrientation = Int32.Parse(pointsConfigRead["NotAnalyzedOrientation"]);
             }
             catch (KeyNotFoundException e)
             {

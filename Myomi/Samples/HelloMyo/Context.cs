@@ -15,7 +15,7 @@ namespace Myomi
         public PointsConfig Points { get; set; }
         public MyomiHub Hub { get; set; }
         public MyomiMyo Myo { get; set; }
-        public static Context ProgramContext
+        public static Context Instance
         {
             get
             {

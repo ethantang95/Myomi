@@ -21,7 +21,7 @@ namespace Myomi.Instances
             _myoState = new MyoState();
             while (_myo == null)
             {
-                _myo = Context.ProgramContext.Hub.GetMyo();
+                _myo = Context.Instance.Hub.GetMyo();
             }
             _isOnArm = true;
 

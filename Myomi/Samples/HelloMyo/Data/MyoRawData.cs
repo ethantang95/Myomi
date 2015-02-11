@@ -35,7 +35,7 @@ namespace Myomi.Data
             this.X = fromMyo.X;
             this.Y = fromMyo.Y;
             this.Z = fromMyo.Z;
-            double[] allVectors = new Double { this.X, this.Y, this.Z };
+            double[] allVectors = { this.X, this.Y, this.Z };
             this.Normal = CommonOperations.GetNormal(allVectors);
         }
     }
@@ -52,7 +52,7 @@ namespace Myomi.Data
             this.X = fromMyo.X;
             this.Y = fromMyo.Y;
             this.Z = fromMyo.Z;
-            double[] allVectors = new Double { this.X, this.Y, this.Z };
+            double[] allVectors = { this.X, this.Y, this.Z };
             this.Normal = CommonOperations.GetNormal(allVectors);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using MyoNet.Myo;
 using Myomi.Data;
+using Myomi.Analyzer;
 
 namespace Myomi
 {
@@ -27,7 +28,7 @@ namespace Myomi
                     hub.LockingPolicy = MyoNet.Myo.LockingPolicy.None;
 					hub.MyoUnpaired += OnUnpair;
                     Console.WriteLine("Attempting to find a Myo...");
-                    IMyo myo = hub.WaitForMyo(TimeSpan.FromSeconds(10));
+                    var myo = hub.WaitForMyo(TimeSpan.FromSeconds(10));
                     if (myo == null)
                         throw new TimeoutException("Unable to find a Myo!");
 
@@ -42,6 +43,7 @@ namespace Myomi
                         //we are going to run myomi at about 20hz
 						hub.Run(TimeSpan.FromMilliseconds(1000 / 20));
                         PrintDisplay();
+                        Analyze();
 					}
 				}
 			}
@@ -55,7 +57,9 @@ namespace Myomi
 
         private static void Analyze() 
         {
-            MyoData instance = new MyoData();
+            var rawData = Context.Instance.Myo.GetCurrentData();
+            var dataInstance = MyoDataAnalyzer.GetDataFromRaw(rawData);
+
         }
 
 		private static void PrintDisplay()
