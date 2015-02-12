@@ -14,14 +14,33 @@ namespace Myomi.Analyzer
 
     internal class MyoDataAnalyzer
     {
-        public static int Evaluator(MyoData obtained, MyoDataProfile toCompare)
+        private MyoRawData _rawData;
+        private MyoData _data;
+        private PoseAnalyzer _poseAnalyzer;
+        private AcceleronmeterAnalyzer _accelAnalyzer;
+        private GyroscopeAnalyzer _gyroAnalyzer;
+        private OrientationAnalyzer _orienAnalyzer;
+
+        public MyoDataAnalyzer() 
+        {
+            if (!Context.Instance.Myo.InstanceCollectionEnabled)
+            {
+                return;
+            }
+            _rawData = Context.Instance.Myo.GetCurrentData();
+            _poseAnalyzer = new PoseAnalyzer(_rawData.Pose);
+            _accelAnalyzer = new AcceleronmeterAnalyzer(_rawData.Accel);
+            _gyroAnalyzer = new GyroscopeAnalyzer(_rawData.Gyro);
+            _orienAnalyzer = new OrientationAnalyzer(_rawData.Orien);
+        }
+        public int Evaluator(MyoData obtained, MyoDataProfile toCompare)
         {
             int score = 100;
 
             return score;
         }
 
-        public static MyoData GetDataFromRaw(MyoRawData rawData)
+        public MyoData AnalyzeFromRaw()
         {
             MyoData toReturn = new MyoData();
 

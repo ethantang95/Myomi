@@ -57,8 +57,7 @@ namespace Myomi
 
         private static void Analyze() 
         {
-            var rawData = Context.Instance.Myo.GetCurrentData();
-            var dataInstance = MyoDataAnalyzer.GetDataFromRaw(rawData);
+            var InstanceAnalyzer = new MyoDataAnalyzer();
 
         }
 

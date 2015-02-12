@@ -8,10 +8,16 @@ namespace Myomi.Analyzer
 {
     class AcceleronmeterAnalyzer
     {
+        AcceleronmeterData _data;
 
-        public Result Analyze( AccelerationProfileData profile, AccelerationData data)
+        public AcceleronmeterAnalyzer(AcceleronmeterRawData rawData) 
         {
-            throw new NotImplementedException();
+            TranslateRaw(rawData);
+        }
+
+        private void TranslateRaw(AcceleronmeterRawData rawData)
+        {
+            double highAccelBound;
         }
     }
 }

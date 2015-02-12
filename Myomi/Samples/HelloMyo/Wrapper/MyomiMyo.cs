@@ -5,7 +5,7 @@ using System.Text;
 using MyoNet.Myo;
 using Myomi.Data;
 
-namespace Myomi.Instances
+namespace Myomi.Wrapper
 {
     class MyomiMyo
     {
@@ -15,6 +15,8 @@ namespace Myomi.Instances
         //not sure if this is dangerous or not... we do not know the beahviour of recog/lostArm events
         //it might put the program in an infinite stuck loop if the behaviour is not what is assumed
         bool _isOnArm;
+
+        public bool InstanceCollectionEnabled { get; set; }
 
         public void Initialize()
         {
@@ -31,6 +33,8 @@ namespace Myomi.Instances
             _myo.PoseChanged += OnPoseChanged;
             _myo.RecognizedArm += OnRecognizedArm;
             _myo.LostArm += OnLostArm;
+
+            InstanceCollectionEnabled = true;
         }
 
         public MyoRawData GetCurrentData() 
@@ -63,11 +67,12 @@ namespace Myomi.Instances
         void OnRecognizedArm(object sender, RecognizedArmEventArgs e)
         {
             _myoState.Arm = e.Arm;
+            InstanceCollectionEnabled = true;
         }
 
         void OnLostArm(object sender, MyoEventArgs e)
         {
-
+            InstanceCollectionEnabled = false;
         }
         #endregion
     }

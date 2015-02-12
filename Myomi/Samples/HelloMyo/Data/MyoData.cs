@@ -15,7 +15,7 @@ namespace Myomi.Data
         public Pose Pose { get; set; }
     }
     //data obtained from the acceleronmeter
-    internal class AccelerationData : IData
+    internal class AcceleronmeterData : IData
     {
         public int X { get; set; }
         public int Y { get; set; }
@@ -48,7 +48,7 @@ namespace Myomi.Data
     internal class MyoData
     {
         public PoseData Pose { get; set; }
-        public AccelerationData Accel { get; set; }
+        public AcceleronmeterData Accel { get; set; }
         public GyroscopeData Gyro { get; set; }
         public OrientationData Orien { get; set; }
     }

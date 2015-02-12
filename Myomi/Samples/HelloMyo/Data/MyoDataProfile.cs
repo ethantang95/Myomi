@@ -18,7 +18,7 @@ namespace Myomi.Data
         public bool Enabled { get; set; }
     }
     //data obtained from the acceleronmeter
-    internal class AccelerationProfileData : IProfileData
+    internal class AcceleronmeterProfileData : IProfileData
     {
         public int X { get; set; }
         public int Y { get; set; }
@@ -55,7 +55,7 @@ namespace Myomi.Data
     internal class MyoDataProfile
     {
         public PoseProfileData Pose;
-        public AccelerationProfileData Accel;
+        public AcceleronmeterProfileData Accel;
         public GyroscopeProfileData Gyro;
         public OrientationProfileData Orien;
     }
