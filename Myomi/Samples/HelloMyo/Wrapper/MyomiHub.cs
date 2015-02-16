@@ -17,6 +17,11 @@ namespace Myomi.Wrapper
             hub.MyoUnpaired += OnUnpair;
         }
 
+        public void RunHub(double frequency) 
+        {
+            hub.Run(TimeSpan.FromMilliseconds(frequency));
+        }
+
         //here, we should clean up the left over data or do something when it is unpaired
         private void OnUnpair(object sender, MyoEventArgs e) 
         {

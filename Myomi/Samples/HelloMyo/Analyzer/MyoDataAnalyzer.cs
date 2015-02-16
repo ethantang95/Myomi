@@ -14,12 +14,13 @@ namespace Myomi.Analyzer
 
     internal class MyoDataAnalyzer
     {
-        private MyoRawData _rawData;
-        private MyoData _data;
         private PoseAnalyzer _poseAnalyzer;
         private AcceleronmeterAnalyzer _accelAnalyzer;
         private GyroscopeAnalyzer _gyroAnalyzer;
         private OrientationAnalyzer _orienAnalyzer;
+
+        public MyoRawData RawData { get; private set; }
+        public MyoData Data { get; private set; }
 
         public MyoDataAnalyzer() 
         {
@@ -27,11 +28,11 @@ namespace Myomi.Analyzer
             {
                 return;
             }
-            _rawData = Context.Instance.Myo.GetCurrentData();
-            _poseAnalyzer = new PoseAnalyzer(_rawData.Pose);
-            _accelAnalyzer = new AcceleronmeterAnalyzer(_rawData.Accel);
-            _gyroAnalyzer = new GyroscopeAnalyzer(_rawData.Gyro);
-            _orienAnalyzer = new OrientationAnalyzer(_rawData.Orien);
+            RawData = Context.Instance.Myo.GetCurrentData();
+            _poseAnalyzer = new PoseAnalyzer(RawData.Pose);
+            _accelAnalyzer = new AcceleronmeterAnalyzer(RawData.Accel);
+            _gyroAnalyzer = new GyroscopeAnalyzer(RawData.Gyro);
+            _orienAnalyzer = new OrientationAnalyzer(RawData.Orien);
         }
         public int Evaluator(MyoData obtained, MyoDataProfile toCompare)
         {
@@ -40,6 +41,8 @@ namespace Myomi.Analyzer
             return score;
         }
 
+        //this will then analyze the raw data and parse it into a myo data class
+        //we do not want to make it all automatic because we have different tasks asking for different data
         public MyoData AnalyzeFromRaw()
         {
             MyoData toReturn = new MyoData();

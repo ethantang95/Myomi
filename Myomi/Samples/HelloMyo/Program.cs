@@ -43,7 +43,6 @@ namespace Myomi
                         //we are going to run myomi at about 20hz
 						hub.Run(TimeSpan.FromMilliseconds(1000 / 20));
                         PrintDisplay();
-                        Analyze();
 					}
 				}
 			}
@@ -54,12 +53,6 @@ namespace Myomi
 				Console.ReadKey();
 			}
 		}
-
-        private static void Analyze() 
-        {
-            var InstanceAnalyzer = new MyoDataAnalyzer();
-
-        }
 
 		private static void PrintDisplay()
 		{

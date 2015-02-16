@@ -87,6 +87,11 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="Config\PointsConfig.cs" />
     <Compile Include="Config\UserCalibrationConfig.cs" />
+    <Compile Include="Task\GestureCreatorTask.cs" />
+    <Compile Include="Task\ITaskHandler.cs" />
+    <Compile Include="Task\MyomiProgramTask.cs" />
+    <Compile Include="Task\MyomiTaskManager.cs" />
+    <Compile Include="Task\UserCalibrationTask.cs" />
     <Compile Include="Wrapper\MyomiHub.cs" />
     <Compile Include="Wrapper\MyomiMyo.cs" />
     <Compile Include="Program.cs" />
