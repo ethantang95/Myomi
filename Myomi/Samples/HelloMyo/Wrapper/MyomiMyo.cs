@@ -15,9 +15,14 @@ namespace Myomi.Wrapper
         //not sure if this is dangerous or not... we do not know the beahviour of recog/lostArm events
         //it might put the program in an infinite stuck loop if the behaviour is not what is assumed
         bool _isOnArm;
+        
+        //this should only be set internally for now... unless there's a task where we need to set it externally
+        public bool InstanceCollectionEnabled { get; private set; }
 
-        public bool InstanceCollectionEnabled { get; set; }
-
+        public MyomiMyo() 
+        {
+            Initialize();
+        }
         public void Initialize()
         {
             _myoState = new MyoState();
@@ -35,6 +40,13 @@ namespace Myomi.Wrapper
             _myo.LostArm += OnLostArm;
 
             InstanceCollectionEnabled = true;
+        }
+
+        //destroys the myo object instance
+        public void Terminate() 
+        {
+            _myo.Dispose();
+            _myo = null;
         }
 
         public MyoRawData GetCurrentData() 

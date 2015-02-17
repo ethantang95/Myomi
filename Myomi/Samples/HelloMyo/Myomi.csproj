@@ -87,6 +87,7 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="Config\PointsConfig.cs" />
     <Compile Include="Config\UserCalibrationConfig.cs" />
+    <Compile Include="TaskManager\UserCalibrationManager.cs" />
     <Compile Include="Task\GestureCreatorTask.cs" />
     <Compile Include="Task\ITaskHandler.cs" />
     <Compile Include="Task\MyomiProgramTask.cs" />
@@ -128,6 +129,10 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Task\Documentation.txt" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -22,13 +22,9 @@ namespace Myomi.Analyzer
         public MyoRawData RawData { get; private set; }
         public MyoData Data { get; private set; }
 
-        public MyoDataAnalyzer() 
+        public MyoDataAnalyzer(MyoRawData rawData) 
         {
-            if (!Context.Instance.Myo.InstanceCollectionEnabled)
-            {
-                return;
-            }
-            RawData = Context.Instance.Myo.GetCurrentData();
+            RawData = rawData;
             _poseAnalyzer = new PoseAnalyzer(RawData.Pose);
             _accelAnalyzer = new AcceleronmeterAnalyzer(RawData.Accel);
             _gyroAnalyzer = new GyroscopeAnalyzer(RawData.Gyro);
@@ -45,7 +41,7 @@ namespace Myomi.Analyzer
         //we do not want to make it all automatic because we have different tasks asking for different data
         public MyoData AnalyzeFromRaw()
         {
-            MyoData toReturn = new MyoData();
+            var toReturn = new MyoData();
 
 
             return null;

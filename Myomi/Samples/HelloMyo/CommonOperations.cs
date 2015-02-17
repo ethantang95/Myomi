@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 //this class is used for any options and stuff that are well... common...
 namespace Myomi
@@ -17,6 +18,11 @@ namespace Myomi
             }
             toReturn = Math.Sqrt(toReturn);
             return toReturn;
+        }
+
+        public static void Sleep(int time) 
+        {
+            Thread.Sleep(time);
         }
     }
 }

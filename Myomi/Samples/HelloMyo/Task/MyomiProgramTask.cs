@@ -7,7 +7,7 @@ using Myomi.Analyzer;
 namespace Myomi.Task
 {
     //this class does the main purpose of myomi, which is take the data and matches it with profiles
-    class MyomiProgramTask: ITaskHandler
+    internal class MyomiProgramTask: ITaskHandler
     {
         MyoDataAnalyzer _analyzer;
 

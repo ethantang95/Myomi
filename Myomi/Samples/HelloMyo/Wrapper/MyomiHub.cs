@@ -10,6 +10,10 @@ namespace Myomi.Wrapper
     {
         Hub hub;
 
+        public MyomiHub() 
+        {
+            Initialize();
+        }
         public void Initialize()
         {
             hub = new Hub("com.myomi.program");

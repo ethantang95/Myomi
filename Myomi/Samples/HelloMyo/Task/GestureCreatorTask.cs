@@ -7,7 +7,7 @@ using Myomi.Analyzer;
 namespace Myomi.Task
 {
     //this class is used for making new gestures
-    class GestureCreatorTask: ITaskHandler
+    internal class GestureCreatorTask: ITaskHandler
     {
         MyoDataAnalyzer _analyzer;
 
