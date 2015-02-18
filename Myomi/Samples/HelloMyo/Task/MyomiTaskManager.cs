@@ -29,11 +29,20 @@ namespace Myomi.Task
         public void Run()
         {
             _myo = new MyomiMyo();
+            if (!_myo.MyoFound) 
+            {
+                Console.WriteLine("A Myo cannot be found, returning back");
+                return;
+            }
             this._handler.Myo = _myo;
 
-            while (!StopExecution)
+            while (!StopExecution && !Context.Instance.GlobalTaskHalt)
             {
                 Context.Instance.Hub.RunHub(_frequency);
+                if (StopExecution || Context.Instance.GlobalTaskHalt)
+                {
+                    continue;
+                }
                 if (_myo.InstanceCollectionEnabled)
                 {
                     this.Analyze();

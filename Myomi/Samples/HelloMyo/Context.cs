@@ -16,6 +16,8 @@ namespace Myomi
         public UserCalibrationConfig UserCalibration { get; set; }
         public MyomiHub Hub { get; set; }
         public double DefaultFrequency { get; set; }
+        //the global task halt shall only be used whenever we want to immeditately stop execution anywhere
+        public bool GlobalTaskHalt { get; set; }
 
         public static Context Instance
         {
@@ -33,6 +35,7 @@ namespace Myomi
 
         private Context() 
         {
+            GlobalTaskHalt = false;
             DefaultFrequency = (1000 / 50); //the default frequency for this program is 20hz
             Hub = new MyomiHub();
             //should be run on a separate thread since getting the myo to set up is a whole different task

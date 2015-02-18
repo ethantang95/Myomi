@@ -6,7 +6,7 @@ using MyoNet.Myo;
 
 namespace Myomi.Wrapper
 {
-    class MyomiHub
+    internal class MyomiHub
     {
         Hub hub;
 
@@ -18,7 +18,15 @@ namespace Myomi.Wrapper
         {
             hub = new Hub("com.myomi.program");
             hub.LockingPolicy = MyoNet.Myo.LockingPolicy.None;
-            hub.MyoUnpaired += OnUnpair;
+            hub.MyoUnpaired += MyoGone;
+            hub.MyoDisconnected += MyoGone;
+            hub.MyoPaired += MyoAppear;
+            hub.MyoConnected += MyoAppear;
+        }
+
+        internal IMyo GetMyo()
+        {
+            return hub.WaitForMyo(TimeSpan.FromMilliseconds(1500));
         }
 
         public void RunHub(double frequency) 
@@ -27,14 +35,15 @@ namespace Myomi.Wrapper
         }
 
         //here, we should clean up the left over data or do something when it is unpaired
-        private void OnUnpair(object sender, MyoEventArgs e) 
+        void MyoGone(object sender, MyoEventArgs e) 
         {
-
+            //first, halt all operations
+            Context.Instance.GlobalTaskHalt = true;
         }
 
-        internal IMyo GetMyo()
+        void MyoAppear(object sender, MyoEventArgs e) 
         {
-            return hub.WaitForMyo();
+            Context.Instance.GlobalTaskHalt = false;
         }
     }
 }

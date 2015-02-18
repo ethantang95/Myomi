@@ -18,6 +18,7 @@ namespace Myomi.Wrapper
         
         //this should only be set internally for now... unless there's a task where we need to set it externally
         public bool InstanceCollectionEnabled { get; private set; }
+        public bool MyoFound { get; private set; }
 
         public MyomiMyo() 
         {
@@ -26,11 +27,19 @@ namespace Myomi.Wrapper
         public void Initialize()
         {
             _myoState = new MyoState();
-            while (_myo == null)
+            MyoFound = false;
+            for (int i = 0; i < 30 && _myo == null; i++)
             {
+                Console.Write("\r");
+                Console.Write("Attempting to find a myo, attempt {0}", i);
                 _myo = Context.Instance.Hub.GetMyo();
             }
-            _isOnArm = true;
+            if (_myo == null) 
+            {
+                return;
+            }
+
+            MyoFound = true;
             //we will vibrate whenever a new MyomiMyo is created
             Vibrate(VibrationType.Medium);
 
@@ -41,7 +50,10 @@ namespace Myomi.Wrapper
             _myo.RecognizedArm += OnRecognizedArm;
             _myo.LostArm += OnLostArm;
 
-            InstanceCollectionEnabled = true;
+            if (_isOnArm)
+            {
+                InstanceCollectionEnabled = true;
+            }
         }
 
         //destroys the myo object instance
@@ -88,12 +100,14 @@ namespace Myomi.Wrapper
         {
             MyoStateNotification();
             _myoState.Arm = e.Arm;
+            _isOnArm = true;
             InstanceCollectionEnabled = true;
         }
 
         void OnLostArm(object sender, MyoEventArgs e)
         {
             MyoStateNotification();
+            _isOnArm = false;
             InstanceCollectionEnabled = false;
         }
         #endregion
