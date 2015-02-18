@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Myomi.Data;
 using Myomi.Analyzer;
+using Myomi.Wrapper;
 
 namespace Myomi.Task
 {
@@ -11,6 +12,7 @@ namespace Myomi.Task
     //carry the data taken
     interface ITaskHandler
     {
+        MyomiMyo Myo { get; set; }
         void Handle(MyoDataAnalyzer analyzer);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Myomi.Analyzer;
 using Myomi.Data;
+using Myomi.Wrapper;
 
 namespace Myomi.Task
 {
@@ -13,6 +14,8 @@ namespace Myomi.Task
     {
         //this will be used for identifying which calibration are we doing
         public enum Calibrating { MaxAccel, MinAccel, MaxGyro, MinGyro }
+
+        public MyomiMyo Myo { get; set; }
 
         List<double> _collectedValues;
         Calibrating _calibrating;

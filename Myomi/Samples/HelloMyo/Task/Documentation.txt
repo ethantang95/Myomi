@@ -2,6 +2,7 @@
 It is decided that this should be an async or a multithreadded task so it will not take up the UI thread.
 The myomi task will be running in a controlled infinite loop that is set externally by anything that initiates a task.
 The task themselves will define what each task should do and how it should handle the data since the analyzer is passed into it
+Note that when we are using MyomiProgramTask, at the start and the end of the task, the myo will vibrate to indicate the task bounds
 
 TODO:
 Decide if the task need to pause instance collection

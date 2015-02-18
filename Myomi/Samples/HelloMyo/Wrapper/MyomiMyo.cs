@@ -31,6 +31,8 @@ namespace Myomi.Wrapper
                 _myo = Context.Instance.Hub.GetMyo();
             }
             _isOnArm = true;
+            //we will vibrate whenever a new MyomiMyo is created
+            Vibrate(VibrationType.Medium);
 
             _myo.AccelerometerDataAcquired += OnAccelerometerData;
             _myo.GyroscopeDataAquired += OnGyroscopeData;
@@ -45,6 +47,7 @@ namespace Myomi.Wrapper
         //destroys the myo object instance
         public void Terminate() 
         {
+            Vibrate(VibrationType.Medium);
             _myo.Dispose();
             _myo = null;
         }
@@ -53,6 +56,11 @@ namespace Myomi.Wrapper
         {
             MyoRawData data = new MyoRawData(_myoState);
             return data;
+        }
+
+        public void Vibrate(VibrationType vibType) 
+        {
+            _myo.Vibrate(vibType);
         }
 
         #region EventDeclaration
@@ -78,15 +86,24 @@ namespace Myomi.Wrapper
 
         void OnRecognizedArm(object sender, RecognizedArmEventArgs e)
         {
+            MyoStateNotification();
             _myoState.Arm = e.Arm;
             InstanceCollectionEnabled = true;
         }
 
         void OnLostArm(object sender, MyoEventArgs e)
         {
+            MyoStateNotification();
             InstanceCollectionEnabled = false;
         }
         #endregion
+
+        void MyoStateNotification() 
+        {
+            Vibrate(VibrationType.Short);
+            CommonOperations.Sleep(150);
+            Vibrate(VibrationType.Short);
+        }
     }
 
     internal class MyoState 

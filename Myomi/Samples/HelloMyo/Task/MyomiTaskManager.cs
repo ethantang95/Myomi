@@ -1,5 +1,6 @@
 ﻿using Myomi.Analyzer;
 using Myomi.Wrapper;
+using MyoNet.Myo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace Myomi.Task
         public void Run()
         {
             _myo = new MyomiMyo();
+            this._handler.Myo = _myo;
+
             while (!StopExecution)
             {
                 Context.Instance.Hub.RunHub(_frequency);
