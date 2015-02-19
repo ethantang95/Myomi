@@ -28,6 +28,7 @@ namespace Myomi
                 if (_context == null)
                 {
                     _context = new Context();
+                    _context.InitalizeConfigs();
                 }
                 return _context;
             }
@@ -37,6 +38,11 @@ namespace Myomi
         {
             GlobalTaskHalt = false;
             DefaultFrequency = (1000 / 50); //the default frequency for this program is 20hz
+        }
+
+        //these classes references Context, so we need to move it outside
+        private void InitalizeConfigs()
+        {
             Hub = new MyomiHub();
             //should be run on a separate thread since getting the myo to set up is a whole different task
             //but disables the user from continuing if a myo is not detected in MyomiHub
@@ -51,6 +57,7 @@ namespace Myomi
                 return;
 
             _context = new Context();
+            _context.InitalizeConfigs();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Myomi.TaskManager;
 using MyoNet.Myo;
 
 //the user configuration, currently we will support 1 profile but in the future, we will be able to support multiple profiles
@@ -23,6 +24,10 @@ namespace Myomi.Config
         public void Initialize()
         {
             var configRead = FileHelper.GetValueFromFile(_fileName);
+            if (configRead == null) 
+            {
+                RecoverFile();
+            }
             SetValue(configRead);
         }
 
@@ -64,7 +69,13 @@ namespace Myomi.Config
         }
         private void RecoverFile() 
         {
-        
+            //here, we start a user calibration manager which will recollect the user's calibrations
+            //then we populate this field and write to file
+            var userCalibrationManager = new UserCalibrationManager();
+            userCalibrationManager.Run();
+            var collected = userCalibrationManager.GetCollected();
+            SetValue(collected);
+            FileHelper.WriteToFile(collected, _fileName);
         }
     }
 }

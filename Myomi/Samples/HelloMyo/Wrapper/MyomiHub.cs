@@ -8,7 +8,8 @@ namespace Myomi.Wrapper
 {
     internal class MyomiHub
     {
-        Hub hub;
+        Hub _hub;
+        IMyo _myo;
 
         public MyomiHub() 
         {
@@ -16,22 +17,33 @@ namespace Myomi.Wrapper
         }
         public void Initialize()
         {
-            hub = new Hub("com.myomi.program");
-            hub.LockingPolicy = MyoNet.Myo.LockingPolicy.None;
-            hub.MyoUnpaired += MyoGone;
-            hub.MyoDisconnected += MyoGone;
-            hub.MyoPaired += MyoAppear;
-            hub.MyoConnected += MyoAppear;
+            if (_hub == null)
+            {
+                _hub = new Hub("com.myomi.program");
+                //hub.LockingPolicy = MyoNet.Myo.LockingPolicy.None;
+                _hub.MyoUnpaired += MyoGone;
+                _hub.MyoDisconnected += MyoGone;
+                _hub.MyoPaired += MyoAppear;
+                _hub.MyoConnected += MyoAppear;
+            }
         }
 
         internal IMyo GetMyo()
         {
-            return hub.WaitForMyo(TimeSpan.FromMilliseconds(1500));
+            if (_myo == null)
+            {
+                _myo = _hub.WaitForMyo(TimeSpan.FromMilliseconds(1500));
+                return _myo;
+            }
+            else 
+            {
+                return _myo;
+            }
         }
 
         public void RunHub(double frequency) 
         {
-            hub.Run(TimeSpan.FromMilliseconds(frequency));
+            _hub.Run(TimeSpan.FromMilliseconds(frequency));
         }
 
         //here, we should clean up the left over data or do something when it is unpaired

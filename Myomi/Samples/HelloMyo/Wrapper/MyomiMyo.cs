@@ -56,12 +56,21 @@ namespace Myomi.Wrapper
             }
         }
 
-        //destroys the myo object instance
+        //not actually destroy it... but kinda just render it useless as somehow, we cannot get another one
         public void Terminate() 
         {
             Vibrate(VibrationType.Medium);
-            _myo.Dispose();
-            _myo = null;
+            _myo.AccelerometerDataAcquired -= OnAccelerometerData;
+            _myo.GyroscopeDataAquired -= OnGyroscopeData;
+            _myo.OrientationDataAcquired -= OnOrientationData;
+            _myo.PoseChanged -= OnPoseChanged;
+            _myo.RecognizedArm -= OnRecognizedArm;
+            _myo.LostArm -= OnLostArm;
+        }
+
+        public Arm GetCurrentArm() 
+        {
+            return _myoState.Arm;
         }
 
         public MyoRawData GetCurrentData() 

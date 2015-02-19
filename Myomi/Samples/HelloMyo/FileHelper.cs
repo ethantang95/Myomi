@@ -16,9 +16,12 @@ namespace Myomi.Config
             {
                 using (var reader = new StreamReader(fileName))
                 {
-                    string line = reader.ReadLine();
-                    var configLine = line.Split(':');
-                    toReturn.Add(configLine[0], configLine[1]);
+                    string line;
+                    while (((line = reader.ReadLine()) != null) && (line != String.Empty))
+                    {
+                        var configLine = line.Split(':');
+                        toReturn.Add(configLine[0], configLine[1]);
+                    }
                 }
             }
             catch (Exception e)

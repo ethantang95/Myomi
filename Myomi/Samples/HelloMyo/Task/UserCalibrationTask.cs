@@ -5,6 +5,7 @@ using System.Text;
 using Myomi.Analyzer;
 using Myomi.Data;
 using Myomi.Wrapper;
+using MyoNet.Myo;
 
 namespace Myomi.Task
 {
@@ -13,11 +14,12 @@ namespace Myomi.Task
     internal class UserCalibrationTask: ITaskHandler
     {
         //this will be used for identifying which calibration are we doing
-        public enum Calibrating { MaxAccel, MinAccel, MaxGyro, MinGyro }
+        public enum Calibrating { FastAccel, SlowAccel, FastGyro, SlowGyro, Arm }
 
         public MyomiMyo Myo { get; set; }
 
         List<double> _collectedValues;
+        Arm _arm;
         Calibrating _calibrating;
         MyoDataAnalyzer _analyzer;
 
@@ -32,17 +34,20 @@ namespace Myomi.Task
             var rawData = analyzer.RawData;
             switch (_calibrating) 
             {
-                case Calibrating.MaxAccel:
+                case Calibrating.FastAccel:
                     _collectedValues.Add(rawData.Accel.Normal);
                     break;
-                case Calibrating.MinAccel:
+                case Calibrating.SlowAccel:
                     _collectedValues.Add(rawData.Accel.Normal);
                     break;
-                case Calibrating.MaxGyro:
+                case Calibrating.FastGyro:
                     _collectedValues.Add(rawData.Gyro.Normal);
                     break;
-                case Calibrating.MinGyro:
+                case Calibrating.SlowGyro:
                     _collectedValues.Add(rawData.Gyro.Normal);
+                    break;
+                case Calibrating.Arm:
+                    _arm = Myo.GetCurrentArm();
                     break;
                 default:
                     //should never reach here
@@ -60,18 +65,23 @@ namespace Myomi.Task
             //for min, we are setting it to 120% of the max recorded value for accel, 100% for gyro
             switch (_calibrating) 
             {
-                case Calibrating.MaxAccel:
+                case Calibrating.FastAccel:
                     return 0.8 * valuesArray.Max();
-                case Calibrating.MinAccel:
+                case Calibrating.SlowAccel:
                     return 1.2 * valuesArray.Max();
-                case Calibrating.MaxGyro:
+                case Calibrating.FastGyro:
                     return 0.8 * valuesArray.Max();
-                case Calibrating.MinGyro:
+                case Calibrating.SlowGyro:
                     return 1.0 * valuesArray.Max();
                 default:
                     //should never reach here
                     return 0;
             }
+        }
+
+        public Arm GetArm() 
+        {
+            return _arm;
         }
     }
 }

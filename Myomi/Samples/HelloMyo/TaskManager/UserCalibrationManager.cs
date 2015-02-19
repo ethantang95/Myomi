@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Myomi.Task;
+using MyoNet.Myo;
 using System.Threading;
 
 namespace Myomi.TaskManager
@@ -10,24 +11,46 @@ namespace Myomi.TaskManager
     internal class UserCalibrationManager
     {
         bool _complete;
-        double _maxAccel, _minAccel, _maxGyro, _minGyro;
+        double _fastAccel, _slowAccel, _fastGyro, _slowGyro;
+        Arm _arm;
         public void Run() 
         {
             CommonOperations.Sleep(2000);
-            Console.Clear();
-            Console.WriteLine("Starting calibration of user movements");
 
             while (!_complete) 
             {
-                _complete &= GetMaxAccel();
-                _complete &= GetMinAccel();
-                _complete &= GetMaxGyro();
-                _complete &= GetMinGyro();
+                Console.Clear();
+                Console.WriteLine("Starting calibration of user movements");
+
+                _complete &= GetArm();
+                _complete &= GetFastAccel();
+                _complete &= GetSlowAccel();
+                _complete &= GetFastGyro();
+                _complete &= GetSlowGyro();
                 _complete &= AnalyzeResults();
             }
+
         }
 
-        bool GetMaxAccel() 
+        bool GetArm() 
+        {
+            Console.WriteLine("Getting which arm is the myo is on");
+
+            try
+            {
+                var task = GetData(UserCalibrationTask.Calibrating.Arm, 500);
+                _arm = task.GetArm();
+                Console.WriteLine("Calibration Success");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Something went wrong when trying to calibrate user movements");
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+        }
+        bool GetFastAccel() 
         {
             Console.WriteLine("Swing your arms in a fast motion to have a upper bound acceleration calibration");
             Console.WriteLine("Press enter to start");
@@ -35,8 +58,8 @@ namespace Myomi.TaskManager
 
             try
             {
-                var task = GetData(UserCalibrationTask.Calibrating.MaxAccel);
-                _maxAccel = task.GetDesired();
+                var task = GetData(UserCalibrationTask.Calibrating.FastAccel);
+                _fastAccel = task.GetDesired();
                 Console.WriteLine("Calibration Success");
                 return true;
             }
@@ -48,7 +71,7 @@ namespace Myomi.TaskManager
             }
         }
 
-        bool GetMinAccel()
+        bool GetSlowAccel()
         {
             Console.WriteLine("Move your arms in a slow motion to have a lower bound acceleration calibration");
             Console.WriteLine("Press enter to start");
@@ -56,8 +79,8 @@ namespace Myomi.TaskManager
 
             try
             {
-                var task = GetData(UserCalibrationTask.Calibrating.MinAccel);
-                _minAccel = task.GetDesired();
+                var task = GetData(UserCalibrationTask.Calibrating.SlowAccel);
+                _slowAccel = task.GetDesired();
                 Console.WriteLine("Calibration Success");
                 return true;
             }
@@ -69,7 +92,7 @@ namespace Myomi.TaskManager
             }
         }
 
-        bool GetMaxGyro()
+        bool GetFastGyro()
         {
             Console.WriteLine("Rotate your wrist in a fast motion to have a upper bound rotation calibration");
             Console.WriteLine("Press enter to start");
@@ -77,8 +100,8 @@ namespace Myomi.TaskManager
 
             try
             {
-                var task = GetData(UserCalibrationTask.Calibrating.MaxGyro);
-                _maxGyro = task.GetDesired();
+                var task = GetData(UserCalibrationTask.Calibrating.FastGyro);
+                _fastGyro = task.GetDesired();
                 Console.WriteLine("Calibration Success");
                 return true;
             }
@@ -90,7 +113,7 @@ namespace Myomi.TaskManager
             }
         }
 
-        bool GetMinGyro()
+        bool GetSlowGyro()
         {
             Console.WriteLine("Rotate your wrist in a slow motion to have a lower bound rotation calibration");
             Console.WriteLine("Press enter to start");
@@ -98,8 +121,8 @@ namespace Myomi.TaskManager
 
             try
             {
-                var task = GetData(UserCalibrationTask.Calibrating.MinGyro);
-                _minGyro = task.GetDesired();
+                var task = GetData(UserCalibrationTask.Calibrating.SlowGyro);
+                _slowGyro = task.GetDesired();
                 Console.WriteLine("Calibration Success");
                 return true;
             }
@@ -113,13 +136,19 @@ namespace Myomi.TaskManager
 
         UserCalibrationTask GetData(UserCalibrationTask.Calibrating currentlyCalibrating) 
         {
+            return GetData(currentlyCalibrating, Int32.MaxValue);
+        }
+
+        UserCalibrationTask GetData(UserCalibrationTask.Calibrating currentlyCalibrating, int waitTime) 
+        {
             var task = new UserCalibrationTask(currentlyCalibrating);
             var manager = new MyomiTaskManager((1000 / 20), task);
             var taskThread = new Thread(manager.Run);
+            Console.WriteLine("Starting new Manager task");
 
             //we are giving the users 5 seconds to calibrate their arm motion
             taskThread.Start();
-            CommonOperations.Sleep(5000);
+            CommonOperations.Sleep(waitTime);
 
             manager.StopExecution = true;
             return task;
@@ -127,7 +156,47 @@ namespace Myomi.TaskManager
 
         private bool AnalyzeResults()
         {
-            throw new NotImplementedException();
+            if (_slowAccel >= _fastAccel) 
+            {
+                Console.WriteLine("Minimum acceleration cannot be greater than maximum acceleration, please recalibrate");
+                return false;
+            }
+            if (_slowGyro >= _fastGyro) 
+            {
+                Console.WriteLine("Minimum gyro rotation cannot be greater than maximum gyro rotation, please recalibrate");
+                return false;
+            }
+            Console.WriteLine("Current calibration values");
+            Console.WriteLine("Maximum Acceleration: {0} m/s^2", _fastAccel);
+            Console.WriteLine("Minimum Acceleration: {0} m/s^2", _slowAccel);
+            Console.WriteLine("Maximum Gyro rotation: {0} m/s", _fastGyro);
+            Console.WriteLine("Minimum Gyro rotation: {0} m/s", _slowGyro);
+            Console.WriteLine("Do you wish to keep these values? (Type 'yes' or 'no')");
+            string option = Console.ReadLine();
+            while (option != "yes" && option != "no") 
+            {
+                Console.WriteLine("Please enter a valid choice (Type 'yes' or 'no')");
+                option = Console.ReadLine();
+            }
+            if (option == "yes") 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public Dictionary<string, string> GetCollected() 
+        {
+            var toReturn = new Dictionary<string, string>();
+            toReturn.Add("FastAccel", _fastAccel.ToString());
+            toReturn.Add("SlowAccel", _slowAccel.ToString());
+            toReturn.Add("FastGyro", _fastGyro.ToString());
+            toReturn.Add("SlowGyro", _slowGyro.ToString());
+            toReturn.Add("Arm", _arm.ToString());
+            return toReturn;
         }
     }
 }

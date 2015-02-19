@@ -19,7 +19,8 @@ namespace Myomi
 		static void Main(string[] args)
 		{
             //should be the first line since it basically creates this program and makes it working
-            //Context.Initialize();
+            Context.Initialize();
+            return;
 			try
 			{
 				using (var hub = new Hub("com.myomi.program"))
