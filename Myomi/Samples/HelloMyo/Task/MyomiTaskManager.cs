@@ -28,7 +28,7 @@ namespace Myomi.Task
         //we want that every task, a new Myo instance is initalized, cleaning up the previous instance
         public void Run()
         {
-            _myo = new MyomiMyo();
+            _myo = MyomiMyo.Initialize();
             if (!_myo.MyoFound) 
             {
                 Console.WriteLine("A Myo cannot be found, returning back");
