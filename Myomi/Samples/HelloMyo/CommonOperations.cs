@@ -14,7 +14,7 @@ namespace Myomi
             double toReturn = 0;
             for (int i = 0; i < vectorLengths.Length; i++) 
             {
-                toReturn = vectorLengths[i] * vectorLengths[i];
+                toReturn += vectorLengths[i] * vectorLengths[i];
             }
             toReturn = Math.Sqrt(toReturn);
             return toReturn;

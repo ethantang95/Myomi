@@ -22,6 +22,7 @@ namespace Myomi.TaskManager
                 Console.Clear();
                 Console.WriteLine("Starting calibration of user movements");
 
+                _complete = true;
                 _complete &= GetArm();
                 _complete &= GetFastAccel();
                 _complete &= GetSlowAccel();
@@ -136,7 +137,7 @@ namespace Myomi.TaskManager
 
         UserCalibrationTask GetData(UserCalibrationTask.Calibrating currentlyCalibrating) 
         {
-            return GetData(currentlyCalibrating, Int32.MaxValue);
+            return GetData(currentlyCalibrating, 5000);
         }
 
         UserCalibrationTask GetData(UserCalibrationTask.Calibrating currentlyCalibrating, int waitTime) 
