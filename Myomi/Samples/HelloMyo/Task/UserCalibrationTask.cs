@@ -57,16 +57,16 @@ namespace Myomi.Task
 
         public double GetDesired()
         {
-            //we want to truncate the highest 5% of the values which might possibly be outliers
+            //we want to truncate the highest 3% of the values which might possibly be outliers
             _collectedValues.Sort();
             var valuesArray = _collectedValues.ToArray();
-            valuesArray = valuesArray.Take((int)(valuesArray.Length * 0.95)).ToArray();
-            //for max, we are setting it to 80% of the max recorded value
+            valuesArray = valuesArray.Take((int)(valuesArray.Length * 0.97)).ToArray();
+            //for max, we are setting it to 90% of the max recorded value for accel, 80% for gyro
             //for min, we are setting it to 120% of the max recorded value for accel, 100% for gyro
             switch (_calibrating) 
             {
                 case Calibrating.FastAccel:
-                    return 0.8 * valuesArray.Max();
+                    return 0.9 * valuesArray.Max();
                 case Calibrating.SlowAccel:
                     return 1.2 * valuesArray.Max();
                 case Calibrating.FastGyro:

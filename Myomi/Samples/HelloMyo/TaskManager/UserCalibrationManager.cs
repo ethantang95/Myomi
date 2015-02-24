@@ -53,7 +53,7 @@ namespace Myomi.TaskManager
         }
         bool GetFastAccel() 
         {
-            Console.WriteLine("Swing your arms in a fast motion to have a upper bound acceleration calibration");
+            Console.WriteLine("Swing your arm back and forth in a fast motion to have a upper bound acceleration calibration");
             Console.WriteLine("Press enter to start");
             Console.ReadLine();
 
@@ -143,7 +143,7 @@ namespace Myomi.TaskManager
         UserCalibrationTask GetData(UserCalibrationTask.Calibrating currentlyCalibrating, int waitTime) 
         {
             var task = new UserCalibrationTask(currentlyCalibrating);
-            var manager = new MyomiTaskManager((1000 / 20), task);
+            var manager = new MyomiTaskManager((1000 / 50), task);
             var taskThread = new Thread(manager.Run);
             Console.WriteLine("Starting new Manager task");
 
