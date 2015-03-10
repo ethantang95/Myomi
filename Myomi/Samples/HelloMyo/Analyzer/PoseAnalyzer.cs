@@ -9,7 +9,7 @@ namespace Myomi.Analyzer
 {
     class PoseAnalyzer
     {
-        PoseData _data;
+        public PoseData Data { get; private set; }
 
         public PoseAnalyzer(PoseRawData rawData) 
         {
@@ -18,8 +18,8 @@ namespace Myomi.Analyzer
 
         private void TranslateRaw(PoseRawData rawData)
         {
-            _data = new PoseData();
-            _data.Pose = rawData.Pose;
+            Data = new PoseData();
+            Data.Pose = rawData.Pose;
         }
         private Result Analyze(PoseProfileData profile)
         { 
@@ -27,11 +27,11 @@ namespace Myomi.Analyzer
             if (profile.Enabled)
                 return Result.NotAnalyzed;
 
-            if (profile.Pose == this._data.Pose)
+            if (profile.Pose == this.Data.Pose)
                 return Result.Match;
             else
             {
-                if (profile.Pose == Pose.Rest || this._data.Pose == Pose.Rest)
+                if (profile.Pose == Pose.Rest || this.Data.Pose == Pose.Rest)
                 {
                     return Result.NotRest;
                 }

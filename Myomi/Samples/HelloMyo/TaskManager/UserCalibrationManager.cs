@@ -173,13 +173,8 @@ namespace Myomi.TaskManager
             Console.WriteLine("Maximum Gyro rotation: {0} m/s", _fastGyro);
             Console.WriteLine("Minimum Gyro rotation: {0} m/s", _slowGyro);
             Console.WriteLine("Do you wish to keep these values? (Type 'yes' or 'no')");
-            string option = Console.ReadLine();
-            while (option != "yes" && option != "no") 
-            {
-                Console.WriteLine("Please enter a valid choice (Type 'yes' or 'no')");
-                option = Console.ReadLine();
-            }
-            if (option == "yes") 
+            bool keep = CommonOperations.GetYesOrNo();
+            if (keep) 
             {
                 return true;
             }

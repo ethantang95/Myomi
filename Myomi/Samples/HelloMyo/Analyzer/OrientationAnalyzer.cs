@@ -8,21 +8,36 @@ namespace Myomi.Analyzer
 {
     class OrientationAnalyzer
     {
-        OrientationRawData _rawData;
-        OrientationData _data;
-        OrientationProfileData _profile;
+        public OrientationData Data { get; private set; }
 
         public OrientationAnalyzer(OrientationRawData rawData) 
         {
-            this._rawData = rawData;
+            TranslateRaw(rawData);
         }
-        public void SetData(OrientationData data)
+        private void TranslateRaw(OrientationRawData rawData)
         {
-            this._data = data;
+            Data.Azimuth = CalculateThreashold(rawData.Azimuth);
+            Data.Pitch = CalculateThreashold(rawData.Pitch);
+            Data.Roll = CalculateThreashold(rawData.Roll);
         }
-        public void SetProfile(OrientationProfileData profile)
+        private int CalculateThreashold(double source) 
         {
-            this._profile = profile;
+            if (source >= 0 && source < 90) 
+            {
+                return 1;
+            }
+            else if (source >= 90 && source < 180) 
+            {
+                return 2;
+            }
+            else if (source >= 180 && source < 270)
+            {
+                return 3;
+            }
+            else 
+            {
+                return 4;
+            }
         }
     }
 }

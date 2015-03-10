@@ -10,6 +10,7 @@ namespace Myomi.Analyzer
     //the results are simply used to see what kind of matching it is
     //Match, NoMatch, and NotAnalyzed are straight forward
     //SlightMatch is if it matches with an adjacent level, NotRest is when a rest is detected/expected and obtained is not that
+    //this class is made to match 1 single instance
     enum Result { Match, SlightMatch, NoMatch, NotRest, NotAnalyzed }
 
     internal class MyoDataAnalyzer
@@ -29,8 +30,9 @@ namespace Myomi.Analyzer
             _accelAnalyzer = new AcceleronmeterAnalyzer(RawData.Accel);
             _gyroAnalyzer = new GyroscopeAnalyzer(RawData.Gyro);
             _orienAnalyzer = new OrientationAnalyzer(RawData.Orien);
+            AnalyzeFromRaw();
         }
-        public int Evaluator(MyoData obtained, MyoDataProfile toCompare)
+        public int Evaluator(MyoDataProfile toCompare)
         {
             int score = 100;
 
@@ -39,12 +41,13 @@ namespace Myomi.Analyzer
 
         //this will then analyze the raw data and parse it into a myo data class
         //we do not want to make it all automatic because we have different tasks asking for different data
-        public MyoData AnalyzeFromRaw()
+        private void AnalyzeFromRaw()
         {
-            var toReturn = new MyoData();
-
-
-            return null;
+            Data = new MyoData();
+            Data.Pose = _poseAnalyzer.Data;
+            Data.Accel = _accelAnalyzer.Data;
+            Data.Gyro = _gyroAnalyzer.Data;
+            Data.Orien = _orienAnalyzer.Data;
         }
     }
 }

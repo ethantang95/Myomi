@@ -24,5 +24,23 @@ namespace Myomi
         {
             Thread.Sleep(time);
         }
+
+        public static bool GetYesOrNo() 
+        {
+            string option = Console.ReadLine();
+            while (option != "yes" && option != "no")
+            {
+                Console.WriteLine("Please enter a valid choice (Type 'yes' or 'no')");
+                option = Console.ReadLine();
+            }
+            if (option == "yes")
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }
     }
 }

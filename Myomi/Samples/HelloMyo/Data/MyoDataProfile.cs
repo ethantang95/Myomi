@@ -8,14 +8,11 @@ using MyoNet.Myo;
 namespace Myomi.Data
 {
     internal interface IProfileData 
-    {
-        bool Enabled { get; set; }
-    }
+    { }
 
     internal class PoseProfileData : IProfileData
     {
         public Pose Pose { get; set; }
-        public bool Enabled { get; set; }
     }
     //data obtained from the acceleronmeter
     internal class AcceleronmeterProfileData : IProfileData
@@ -24,8 +21,6 @@ namespace Myomi.Data
         public int Y { get; set; }
         public int Z { get; set; }
         public int Normal { get; set; }
-        public bool NormalOnly { get; set; }
-        public bool Enabled { get; set; }
     }
     //data obtained from the 
     internal class GyroscopeProfileData : IProfileData
@@ -34,8 +29,6 @@ namespace Myomi.Data
         public int Y { get; set; }
         public int Z { get; set; }
         public int Normal { get; set; }
-        public bool NormalOnly { get; set; }
-        public bool Enabled { get; set; }
     }
 
     internal class OrientationProfileData : IProfileData
@@ -46,18 +39,15 @@ namespace Myomi.Data
         public int Roll { get; set; }
         //azimuth is the rotation about the z axis
         public int Azimuth { get; set; }
-        //half mode would be that instead of divding it up into 4 zones, we divide it up into 2
-        //one side will be 0, the other will be just 1
-        public bool HalfMode { get; set; }
-        public bool Enabled { get; set; }
     }
 
     internal class MyoDataProfile
     {
-        public PoseProfileData Pose;
-        public AcceleronmeterProfileData Accel;
-        public GyroscopeProfileData Gyro;
-        public OrientationProfileData Orien;
+        public PoseProfileData Pose { get; set; }
+        public AcceleronmeterProfileData Accel { get; set; }
+        public GyroscopeProfileData Gyro { get; set; }
+        public OrientationProfileData Orien { get; set; }
+        public int Frames { get; set; }
     }
 
 }

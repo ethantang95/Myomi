@@ -87,6 +87,7 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="Config\PointsConfig.cs" />
     <Compile Include="Config\UserCalibrationConfig.cs" />
+    <Compile Include="TaskManager\GestureCreationManager.cs" />
     <Compile Include="TaskManager\UserCalibrationManager.cs" />
     <Compile Include="Task\GestureCreatorTask.cs" />
     <Compile Include="Task\ITaskHandler.cs" />
