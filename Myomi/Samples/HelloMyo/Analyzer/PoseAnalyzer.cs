@@ -21,10 +21,10 @@ namespace Myomi.Analyzer
             Data = new PoseData();
             Data.Pose = rawData.Pose;
         }
-        private Result Analyze(PoseProfileData profile)
+        private Result Analyze(PoseProfileData profile, MyomiProfileOptions options)
         { 
             //we might have an edge or soft mode where a swift transition from one pose to another will have a leeway time
-            if (profile.Enabled)
+            if (!options.PoseEnabled)
                 return Result.NotAnalyzed;
 
             if (profile.Pose == this.Data.Pose)
@@ -42,9 +42,9 @@ namespace Myomi.Analyzer
             }
         }
 
-        public int GetPoint(PoseProfileData profile) 
+        public int GetPoint(PoseProfileData profile, MyomiProfileOptions options) 
         {
-            Result result = Analyze(profile);
+            Result result = Analyze(profile, options);
             switch (result)
             {
                 case Result.NotAnalyzed:

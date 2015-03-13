@@ -37,7 +37,7 @@ namespace Myomi
         private Context() 
         {
             GlobalTaskHalt = false;
-            DefaultFrequency = (1000 / 50); //the default frequency for this program is 20hz
+            DefaultFrequency = (1000 / 20); //the default frequency for this program is 20hz
         }
 
         //these classes references Context, so we need to move it outside

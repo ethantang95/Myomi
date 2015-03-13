@@ -1,5 +1,6 @@
 ﻿using Myomi.Analyzer;
 using Myomi.Wrapper;
+using Myomi.Data;
 using MyoNet.Myo;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,6 @@ namespace Myomi.Task
         {
             this._frequency = frequency;
             this._handler = handler;
-            StopExecution = false;
         }
 
         //this shall be the method to be called for async task

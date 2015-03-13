@@ -83,6 +83,7 @@
     <Compile Include="Data\MyoData.cs" />
     <Compile Include="Analyzer\MyoDataAnalyzer.cs" />
     <Compile Include="Data\MyoDataProfile.cs" />
+    <Compile Include="Data\MyomiGestureProfile.cs" />
     <Compile Include="Data\MyoRawData.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="Config\PointsConfig.cs" />

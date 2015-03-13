@@ -7,10 +7,17 @@ namespace Myomi.Data
 {
     internal class MyomiGestureProfile
     {
-        MyoProfileOptions _options;
+        IEnumerable<MyoDataProfile> Segments { get; set; }
+        public MyomiProfileOptions Options { get; set; }
+
+        public MyomiGestureProfile(MyomiProfileOptions options, IEnumerable<MyoDataProfile> segments) 
+        {
+            this.Segments = segments;
+            this.Options = options;
+        }
     }
 
-    internal class MyoProfileOptions 
+    internal class MyomiProfileOptions 
     {
         public bool PoseEnabled { get; set; }
         public bool AccelEnabled { get; set; }
@@ -23,7 +30,7 @@ namespace Myomi.Data
         public bool OrienHalfMode { get; set; }
         public bool IgnoreFrameCounts { get; set; }
 
-        public MyoProfileOptions() 
+        public MyomiProfileOptions() 
         {
             EnableAll();
         }
@@ -42,6 +49,8 @@ namespace Myomi.Data
 
         public void DisableAll() 
         {
+            //shouldn't really be called and left there... at least 1 setting should be enabled or else it's a really wierd
+            //profile
             this.PoseEnabled = false;
             this.AccelEnabled = false;
             this.GyroEnabled = false;

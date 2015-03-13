@@ -22,7 +22,8 @@ namespace Myomi.TaskManager
             bool keep = CommonOperations.GetYesOrNo();
             if (keep)
             {
-                AnalyzeData(data);
+                var options = SetOptions();
+                AnalyzeData(data, options);
             }
             else 
             {
@@ -56,9 +57,58 @@ namespace Myomi.TaskManager
             return task.GetData();
         }
 
-        void AnalyzeData(List<MyoData> data) 
+
+        MyomiProfileOptions SetOptions() 
         {
-        
+            var options = new MyomiProfileOptions();
+            Console.WriteLine("Would you like to change any of the default configurations for this gesture?");
+            if (CommonOperations.GetYesOrNo()) 
+            {
+                return options;
+            }
+
+            EnableComponents("pose");
+            options.PoseEnabled = CommonOperations.GetYesOrNo();
+            EnableComponents("acceleration");
+            options.AccelEnabled = CommonOperations.GetYesOrNo();
+            EnableComponents("gyroscope");
+            options.GyroEnabled = CommonOperations.GetYesOrNo();
+            EnableComponents("orientation");
+            options.OrienEnabled = CommonOperations.GetYesOrNo();
+
+            SetAsNormal("acceleration");
+            options.AccelNormOnly = CommonOperations.GetYesOrNo();
+            SetAsNormal("gyroscope");
+            options.GyroNormOnly = CommonOperations.GetYesOrNo();
+
+            Console.WriteLine("Would you like to use half mode for orientation only?");
+            Console.WriteLine("Half mode will only split orientation into 2 halves instead of 4 quarters for processing.");
+            options.OrienHalfMode = CommonOperations.GetYesOrNo();
+
+            Console.WriteLine("Would you like to ignore the frame counts for this gesture?");
+            options.IgnoreFrameCounts = CommonOperations.GetYesOrNo();
+
+            return options;
+        }
+
+        //code factor to the extreme lol...
+        void EnableComponents(string component) 
+        {
+            Console.WriteLine("Would you like to enable {0}?", component);
+        }
+
+        void SetAsNormal(string component) 
+        {
+            Console.WriteLine("Would you like to use the normal component of {0} only?", component);
+        }
+
+        //here, we create a myomi gesture profile from the data and options given
+        void AnalyzeData(List<MyoData> data, MyomiProfileOptions options) 
+        {
+            foreach (var dataFrame in data) 
+            {
+                
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Myomi.Analyzer
             _orienAnalyzer = new OrientationAnalyzer(RawData.Orien);
             AnalyzeFromRaw();
         }
-        public int Evaluator(MyoDataProfile toCompare)
+        public int Evaluator(MyoDataProfile toCompare, MyomiProfileOptions options)
         {
             int score = 100;
 
