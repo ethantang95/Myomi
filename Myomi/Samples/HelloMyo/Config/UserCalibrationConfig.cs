@@ -23,7 +23,7 @@ namespace Myomi.Config
         }
         public void Initialize()
         {
-            var configRead = FileHelper.GetValueFromFile(_fileName);
+            var configRead = FileHelper.GetValuesFromFile(_fileName);
             if (configRead == null) 
             {
                 RecoverFile();
@@ -39,22 +39,7 @@ namespace Myomi.Config
                 SlowAccel = Double.Parse(configRead["SlowAccel"]);
                 FastGyro = Double.Parse(configRead["FastGyro"]);
                 SlowGyro = Double.Parse(configRead["SlowGyro"]);
-                if (configRead["Arm"] == Arm.Left.ToString()) 
-                {
-                    Arm = Arm.Left;
-                }
-                else if (configRead["Arm"] == Arm.Right.ToString()) 
-                {
-                    Arm = Arm.Right;
-                }
-                else if (configRead["Arm"] == Arm.Unknown.ToString())
-                {
-                    Arm = Arm.Unknown;
-                }
-                else
-                {
-                    throw new FormatException();
-                }
+                Arm = (Arm)Enum.Parse(typeof(Arm), configRead["Arm"]);       
             }
             catch (Exception e)
             {
@@ -75,7 +60,7 @@ namespace Myomi.Config
             userCalibrationManager.Run();
             var collected = userCalibrationManager.GetCollected();
             SetValue(collected);
-            FileHelper.WriteToFile(collected, _fileName);
+            FileHelper.WriteValuesToFile(collected, _fileName);
         }
     }
 }

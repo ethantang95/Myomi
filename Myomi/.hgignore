@@ -1,0 +1,6 @@
+syntax: glob
+Samples/WpfMyo
+Source
+Samples/HelloMyo/obj/x86/Debug
+Samples/HelloMyo/App.config
+Build

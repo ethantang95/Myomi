@@ -53,8 +53,8 @@ namespace Myomi.Task
 
         private void Analyze()
         {
-            var InstanceAnalyzer = new MyoDataAnalyzer(_myo.GetCurrentData());
-            _handler.Handle(InstanceAnalyzer);
+            var instanceAnalyzer = new MyoDataAnalyzer(_myo.GetCurrentData());
+            this.StopExecution = _handler.Handle(instanceAnalyzer);
         }
     }
 }

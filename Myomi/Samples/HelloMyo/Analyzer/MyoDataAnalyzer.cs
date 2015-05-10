@@ -32,10 +32,14 @@ namespace Myomi.Analyzer
             _orienAnalyzer = new OrientationAnalyzer(RawData.Orien);
             AnalyzeFromRaw();
         }
-        public int Evaluator(MyoDataProfile toCompare, MyomiProfileOptions options)
+        public int Evaluator(MyoDataProfile toCompare, MyomiGestureOptions options, int initialScore)
         {
-            int score = 100;
-
+            //initial score should be 100 unless there's frame mismatches
+            int score = initialScore;
+            score -= _poseAnalyzer.GetPoint(toCompare.Pose, options);
+            score -= _accelAnalyzer.GetPoint(toCompare.Accel, options);
+            score -= _gyroAnalyzer.GetPoint(toCompare.Gyro, options);
+            score -= _orienAnalyzer.GetPoint(toCompare.Orien, options);
             return score;
         }
 

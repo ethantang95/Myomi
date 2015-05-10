@@ -42,5 +42,39 @@ namespace Myomi
                 return false;
             }
         }
+
+        public static int GetHalfModeValue(int value)
+        {
+            if (value > 3 || value < 0)
+            {
+                throw new ArgumentException();
+            }
+            else if (value == 3 || value == 2)
+            {
+                return 0;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+
+        public static int GetOptionValue(string optionString, int start, int end)
+        {
+            int option;
+            if (!Int32.TryParse(optionString, out option))
+            {
+                return -1;
+            }
+            //0 is our default exit option
+            if ((option > end || option < start) && option != 0)
+            {
+                return -1;
+            }
+            else
+            {
+                return option;
+            }
+        }
     }
 }

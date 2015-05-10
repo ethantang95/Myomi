@@ -17,25 +17,33 @@ namespace Myomi.Task
         MyoDataAnalyzer _analyzer;
         bool _enabled = false;
         bool _finished = false;
-        List<MyoData> _dataFrames = new List<MyoData>();
+        private List<MyoData> _dataFrames;
 
-        public void Handle(MyoDataAnalyzer analyzer)
+        public bool Handle(MyoDataAnalyzer analyzer)
         {
             this._analyzer = analyzer;
+            this._dataFrames = new List<MyoData>();
             if (ReadyState() && _enabled && !_finished) 
             {
                 _finished = true;
                 _enabled = false;
                 Myo.Vibrate(VibrationType.Short);
+                return false;
             }
-            if (ReadyState() && !_enabled && !_finished)
+            else if (ReadyState() && !_enabled && !_finished)
             {
                 _enabled = true;
                 Myo.Vibrate(VibrationType.Short);
+                return true;
             }
-            if (_enabled) 
+            else if (_enabled)
             {
                 _dataFrames.Add((MyoData)_analyzer.Data.Clone());
+                return false;
+            }
+            else
+            {
+                return false;
             }
         }
 

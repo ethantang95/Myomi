@@ -13,6 +13,6 @@ namespace Myomi.Task
     interface ITaskHandler
     {
         MyomiMyo Myo { get; set; }
-        void Handle(MyoDataAnalyzer analyzer);
+        bool Handle(MyoDataAnalyzer analyzer);
     }
 }

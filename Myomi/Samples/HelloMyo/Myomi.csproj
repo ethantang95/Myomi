@@ -72,6 +72,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="WindowsInput">
+      <HintPath>..\..\Source\Myo.Net\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analyzer\AcceleronmeterAnalyzer.cs" />
@@ -83,17 +86,26 @@
     <Compile Include="Data\MyoData.cs" />
     <Compile Include="Analyzer\MyoDataAnalyzer.cs" />
     <Compile Include="Data\MyoDataProfile.cs" />
-    <Compile Include="Data\MyomiGestureProfile.cs" />
+    <Compile Include="Data\MyomiGesture.cs" />
+    <Compile Include="Data\MyomiGestureAction.cs" />
+    <Compile Include="Data\MyomiProfile.cs" />
+    <Compile Include="Data\MyomiGestureOptions.cs" />
+    <Compile Include="Data\MyomiProfileOptions.cs" />
     <Compile Include="Data\MyoRawData.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="Config\PointsConfig.cs" />
     <Compile Include="Config\UserCalibrationConfig.cs" />
+    <Compile Include="KeyToKeyBind.cs" />
     <Compile Include="TaskManager\GestureCreationManager.cs" />
+    <Compile Include="TaskManager\GestureMatchingManager.cs" />
     <Compile Include="TaskManager\UserCalibrationManager.cs" />
+    <Compile Include="Task\GestureCreatorMatchingTask.cs" />
     <Compile Include="Task\GestureCreatorTask.cs" />
+    <Compile Include="Task\GestureMatchingEngine.cs" />
     <Compile Include="Task\ITaskHandler.cs" />
-    <Compile Include="Task\MyomiProgramTask.cs" />
+    <Compile Include="Task\GestureMatchingTask.cs" />
     <Compile Include="Task\MyomiTaskManager.cs" />
+    <Compile Include="Task\NonHandleTasks\ProfileManagingTask.cs" />
     <Compile Include="Task\UserCalibrationTask.cs" />
     <Compile Include="Wrapper\MyomiHub.cs" />
     <Compile Include="Wrapper\MyomiMyo.cs" />
@@ -102,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Source\Myo.Net\Myo.Net\Myo.Net.v40.vcxproj">
@@ -132,6 +145,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Analyzer\Documentation.txt" />
     <Content Include="Task\Documentation.txt" />
   </ItemGroup>
   <ItemGroup />

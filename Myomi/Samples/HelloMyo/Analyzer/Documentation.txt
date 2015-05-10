@@ -1,0 +1,1 @@
+﻿The analyzers in this file should only be used inside a myomi task situation

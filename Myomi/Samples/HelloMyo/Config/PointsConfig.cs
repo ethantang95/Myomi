@@ -8,11 +8,12 @@ namespace Myomi.Config
 {
     // the file for setting the points of program which will be used to calculate matching gestures
     // if any new point profile is added, remember include them into SetValue and RecoverFile
-    public class PointsConfig
+    internal class PointsConfig
     {
         static string _fileName = "Points.config";
         public int Match { get; private set; }
         public int SlightMatch { get; private set; }
+        public int SlightMatchOriental { get; private set; }
         public int NoMatch { get; private set; }
         public int NotRest { get; private set; }
         public int NotAnalyzed { get; private set; }
@@ -20,7 +21,6 @@ namespace Myomi.Config
         public int NotAnalyzedPose { get; private set; }
         public int NotRestPose { get; private set; }
         public int NoMatchOrientation { get; private set; }
-        public int NotAnalyzedOrientation { get; private set; }
 
         public PointsConfig()
         {
@@ -30,7 +30,7 @@ namespace Myomi.Config
         public void Initialize() 
         { 
             //initalizes the values of such by reading the config file
-            var configRead = FileHelper.GetValueFromFile(_fileName);
+            var configRead = FileHelper.GetValuesFromFile(_fileName);
             if (configRead == null)
             {
                 RecoverFile();
@@ -43,7 +43,8 @@ namespace Myomi.Config
             try
             {
                 Match = Int32.Parse(configRead["Match"]);
-                SlightMatch = Int32.Parse(configRead["SlightMatch"]);
+                SlightMatch = Int32.Parse(configRead["SlightMatch"]); 
+                SlightMatchOriental = Int32.Parse(configRead["SlightMatchOriental"]);
                 NoMatch = Int32.Parse(configRead["NoMatch"]);
                 NotRest = Int32.Parse(configRead["NotRest"]);
                 NotAnalyzed = Int32.Parse(configRead["NotAnalyzed"]);
@@ -51,7 +52,7 @@ namespace Myomi.Config
                 NotAnalyzedPose = Int32.Parse(configRead["NotAnalyzedPose"]);
                 NotRestPose = Int32.Parse(configRead["NotRestPose"]);
                 NoMatchOrientation = Int32.Parse(configRead["NoMatchOrientation"]);
-                NotAnalyzedOrientation = Int32.Parse(configRead["NotAnalyzedOrientation"]);
+
             }
             catch (Exception e) 
             {
@@ -75,16 +76,16 @@ namespace Myomi.Config
             var config = new Dictionary<string, string>();
             config.Add("Match", "0");
             config.Add("SlightMatch", "6");
+            config.Add("SlightMatchOriental", "2");
             config.Add("NoMatch", "21");
             config.Add("NotRest", "12");
             config.Add("NotAnalyzed", "0");
             config.Add("NoMatchPose", "50");
             config.Add("NotAnalyzedPose", "0");
             config.Add("NotRestPose", "15");
-            config.Add("NoMatchOrientation", "6");
-            config.Add("NotAnalyzedOrientation", "0");
+            config.Add("NoMatchOrientation", "8");
 
-            if (!FileHelper.WriteToFile(config, _fileName)) 
+            if (!FileHelper.WriteValuesToFile(config, _fileName)) 
             {
                 Console.WriteLine("Failure to recover {0}, now exiting program", _fileName);
                 System.Environment.Exit(-1);

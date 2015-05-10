@@ -24,14 +24,7 @@ namespace Myomi.Data
         public int CompareTo(object obj)
         {
             var toCompare = (PoseData)obj;
-            if (this.Pose == toCompare.Pose)
-            {
-                return 1;
-            }
-            else 
-            {
-                return 0;
-            }
+            return this.Pose == toCompare.Pose ? 1 : 0;
         }
     }
     //data obtained from the acceleronmeter
@@ -44,11 +37,13 @@ namespace Myomi.Data
 
         public object Clone()
         {
-            var clone = new AcceleronmeterData();
-            clone.X = this.X;
-            clone.Y = this.Y;
-            clone.Z = this.Z;
-            clone.Normal = this.Normal;
+            var clone = new AcceleronmeterData
+            {
+                X = this.X,
+                Y = this.Y,
+                Z = this.Z,
+                Normal = this.Normal
+            };
             return clone;
         }
 
@@ -75,11 +70,13 @@ namespace Myomi.Data
 
         public object Clone()
         {
-            var clone = new GyroscopeData();
-            clone.X = this.X;
-            clone.Y = this.Y;
-            clone.Z = this.Z;
-            clone.Normal = this.Normal;
+            var clone = new GyroscopeData
+            {
+                X = this.X,
+                Y = this.Y,
+                Z = this.Z,
+                Normal = this.Normal
+            };
             return clone;
         }
 
@@ -108,10 +105,12 @@ namespace Myomi.Data
 
         public object Clone()
         {
-            var clone = new OrientationData();
-            clone.Pitch = this.Pitch;
-            clone.Roll = this.Roll;
-            clone.Azimuth = this.Azimuth;
+            var clone = new OrientationData
+            {
+                Pitch = this.Pitch,
+                Roll = this.Roll,
+                Azimuth = this.Azimuth
+            };
             return clone;
         }
 
@@ -119,9 +118,9 @@ namespace Myomi.Data
         {
             var toCompare = (OrientationData)obj;
             bool equal = true;
-            equal &= (this.Azimuth == toCompare.Azimuth);
-            equal &= (this.Roll == toCompare.Roll);
             equal &= (this.Pitch == toCompare.Pitch);
+            equal &= (this.Roll == toCompare.Roll);
+            equal &= (this.Azimuth == toCompare.Azimuth);
 
             return (equal ? 1 : 0);
         }
@@ -140,11 +139,13 @@ namespace Myomi.Data
 
         public object Clone()
         {
-            var clone = new MyoData();
-            clone.Pose = (PoseData)this.Pose.Clone();
-            clone.Accel = (AcceleronmeterData)this.Accel.Clone();
-            clone.Gyro = (GyroscopeData)this.Gyro.Clone();
-            clone.Orien = (OrientationData)this.Orien.Clone();
+            var clone = new MyoData
+            {
+                Pose = (PoseData) this.Pose.Clone(),
+                Accel = (AcceleronmeterData) this.Accel.Clone(),
+                Gyro = (GyroscopeData) this.Gyro.Clone(),
+                Orien = (OrientationData) this.Orien.Clone()
+            };
             return clone;
         }
 

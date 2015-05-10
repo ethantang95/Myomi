@@ -40,5 +40,70 @@ namespace Myomi.Analyzer
             else
                 return 2;
         }
+
+        private Result Analyze(int profileValue, int dataValue)
+        {
+            if (profileValue == dataValue)
+            {
+                return Result.Match;
+            }
+            else if (Math.Abs(profileValue - dataValue) == 1)
+            {
+                return Result.SlightMatch;
+            }
+            else if (!(profileValue == 0 && dataValue == 0))
+            {
+                return Result.NotRest;
+            }
+            else
+            {
+                return Result.NoMatch;
+            }
+        }
+
+        private int CalculatePoint(Result result)
+        {
+            switch (result)
+            {
+                case Result.Match:
+                    return Context.Instance.Points.Match;
+                case Result.NotAnalyzed:
+                    return Context.Instance.Points.NotAnalyzed;
+                case Result.NotRest:
+                    return Context.Instance.Points.NotRest;
+                case Result.SlightMatch:
+                    return Context.Instance.Points.SlightMatch;
+                case Result.NoMatch:
+                    return Context.Instance.Points.NoMatch;
+                default:
+                    Console.WriteLine("Invalid result of {0} for Gyroscope", result);
+                    return 100;
+            }
+        }
+
+        public int GetPoint(GyroscopeProfileData profile, MyomiGestureOptions option)
+        {
+            if (!option.GyroEnabled)
+            {
+                return CalculatePoint(Result.NotAnalyzed);
+            }
+            else if (option.GyroNormOnly)
+            {
+                var result = Analyze(profile.Normal, Data.Normal);
+                return CalculatePoint(result);
+            }
+            //full analysis
+            else
+            {
+                int points = 0;
+                var result = Analyze(profile.X, Data.X);
+                points += CalculatePoint(result) / 3;
+                result = Analyze(profile.Y, Data.Y);
+                points += CalculatePoint(result) / 3;
+                result = Analyze(profile.Z, Data.Z);
+                points += CalculatePoint(result) / 3;
+                return points;
+            }
+        }
     }
 }

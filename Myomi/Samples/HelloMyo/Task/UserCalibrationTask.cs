@@ -28,7 +28,7 @@ namespace Myomi.Task
             this._calibrating = calibrating;
             this._collectedValues = new List<double>();
         }
-        public void Handle(MyoDataAnalyzer analyzer)
+        public bool Handle(MyoDataAnalyzer analyzer)
         {
             this._analyzer = analyzer;
             var rawData = analyzer.RawData;
@@ -53,6 +53,7 @@ namespace Myomi.Task
                     //should never reach here
                     break;
             }
+            return false;
         }
 
         public double GetDesired()

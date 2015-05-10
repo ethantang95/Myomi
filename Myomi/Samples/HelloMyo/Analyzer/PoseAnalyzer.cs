@@ -21,17 +21,22 @@ namespace Myomi.Analyzer
             Data = new PoseData();
             Data.Pose = rawData.Pose;
         }
-        private Result Analyze(PoseProfileData profile, MyomiProfileOptions options)
+        private Result Analyze(PoseProfileData profile, MyomiGestureOptions options)
         { 
             //we might have an edge or soft mode where a swift transition from one pose to another will have a leeway time
             if (!options.PoseEnabled)
+            {
                 return Result.NotAnalyzed;
+            }
 
             if (profile.Pose == this.Data.Pose)
+            {
                 return Result.Match;
+            }
+
             else
             {
-                if (profile.Pose == Pose.Rest || this.Data.Pose == Pose.Rest)
+                if (!(profile.Pose == Pose.Rest && this.Data.Pose == Pose.Rest))
                 {
                     return Result.NotRest;
                 }
@@ -42,7 +47,7 @@ namespace Myomi.Analyzer
             }
         }
 
-        public int GetPoint(PoseProfileData profile, MyomiProfileOptions options) 
+        public int GetPoint(PoseProfileData profile, MyomiGestureOptions options) 
         {
             Result result = Analyze(profile, options);
             switch (result)
